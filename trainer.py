@@ -41,7 +41,6 @@ class Trainer:
         self.df = pd.read_csv('./data/spot/experience_light.csv')
         self.spot_names = self.df['spot_name'].values
         self.max_cor = 0
-        self.neg_spots = np.load('./data/unappear_spots.npy')
         self.W = torch.nn.parameter.Parameter(torch.rand(128, 128))
         torch.nn.init.normal_(self.W, 0.1)
         self.W=self.W.to(self.device)
@@ -58,7 +57,8 @@ class Trainer:
                                 + str(self.config['model']['hidden_channels']) + '.pth'
                                 
         self.early_stopping = EarlyStopping(patience=50, path=self.checkpoint_path)
-        wandb.init('popularity', config=config)
+        if config['use_wandb']:
+            wandb.init('popularity', config=config)
 
     def train(self, model, optimizer, data, epoch):
         model.train()
@@ -73,7 +73,9 @@ class Trainer:
             loss = loss.float()
             total_loss+=loss
 
-        wandb.log({'loss':loss})
+        if self.config['use_wandb']:
+            wandb.log({'loss':loss})
+
         loss.backward()
         optimizer.step()
         return model,float(total_loss)

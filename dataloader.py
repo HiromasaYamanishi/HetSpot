@@ -62,8 +62,8 @@ def get_data(config, model_name='ResNet', multi=True,):
             data['spot'].x = torch.from_numpy(np.load(img_emb_path))
 
     if word==True:    
-        data['word'].x = torch.from_numpy(np.load(path.word_embs_ensemble_path)).float() #[num_spots, num_features]
-        #data['word'].x = torch.from_numpy(np.load(path.word_embs_finetune_path)).float()
+        #data['word'].x = torch.from_numpy(np.load(path.word_embs_ensemble_path)).float() #[num_spots, num_features]
+        data['word'].x = torch.from_numpy(np.load(path.word_embs_finetune_path)).float()
         spot_word = torch.from_numpy(np.load(path.spot_word_path)).long()
         word_spot = torch.stack([spot_word[1], spot_word[0]]).long()
         data["spot", "relate", "word"].edge_index = torch.from_numpy(np.load(path.spot_word_path)).long() #[2, num_edges_describe]
@@ -74,7 +74,8 @@ def get_data(config, model_name='ResNet', multi=True,):
         spot_category = torch.from_numpy(np.load(path.spot_category_path)).long()
         category_spot = torch.stack([spot_category[1], spot_category[0]]).long()
         category_size = len(spot_category[1].unique())
-        data['category'].x =torch.nn.functional.one_hot(torch.arange(0,category_size), num_classes=category_size).float()
+        # data['category'].x =torch.nn.functional.one_hot(torch.arange(0,category_size), num_classes=category_size).float()
+        data['category'].x = torch.from_numpy(np.load(os.path.join(path.data_graph_dir, 'category_emb.npy'))).float()
         data['spot', 'has', 'category'].edge_index = torch.from_numpy(np.load(path.spot_category_path)).long()
         data['category', 'revhas', 'spot'].edge_index = category_spot
     if city==True:

@@ -67,6 +67,7 @@ if __name__=='__main__':
     parser.add_argument('--model_type', default='ggnn')
     parser.add_argument('--gpu', type=int, default=0)
     parser.add_argument('--dropout', type=float, default=0.2)
+    parser.add_argument('--use_wandb', action='store_true')
     
     args = parser.parse_args()
     
@@ -88,6 +89,7 @@ if __name__=='__main__':
     config['city_pop_weight'] = args.city_pop_weight
     config['epoch_num'] = args.epoch_num
     config['device'] = f'cuda:{args.gpu}'
+    config['use_wandb'] = args.use_wandb
     config['log'] = False
     config['k'] = 20
     print(config)

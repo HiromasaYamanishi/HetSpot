@@ -41,7 +41,7 @@ class Path:
         self.df_review_path = './data/review/review_all.csv'
         #self.df_review = pd.read_csv(self.df_review_path)
 
-        self.data_graph_dir = '/data/graph'
+        self.data_graph_dir = './data/graph'
         self.data_dir = './data'
         self.flickr_image_dir = './data/flickr_image'
         self.jalan_image_dir = './data/jalan_image'
