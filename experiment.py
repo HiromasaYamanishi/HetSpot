@@ -21,16 +21,8 @@ class ExpRunner:
     def run_experiment(self):
         self.trainer.train_epoch(self.model, self.data, epoch_num=self.config['epoch_num'])
 
-        isempty = os.stat('./result/result.csv').st_size == 0
         with open('./result/result.csv', 'a') as f:
             writer = csv.writer(f)
-            if isempty:
-                writer.writerow(['max_cor', 'best_epoch', 
-                                 'best_cor', 'best_mse', 'best_rmse',
-                                 'best_mape', 'best_mae', 'model_type',
-                                 'num_layers','lr','hidden_channels', 
-                                 'concat', 'city_pop_weight','data_word' , 
-                                 'data_category', 'data_city', 'data_pref', 'dropout'])
         
             writer.writerow([round(self.trainer.max_cor, 5),
                             self.trainer.best_epoch,
